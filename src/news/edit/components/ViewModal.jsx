@@ -14,13 +14,13 @@ const useStyles = makeStyles((theme) =>({
     },
 }))
 
-function ViewModal({handleOnEditClick, handleOnModalClose, news, isEditNotHidden,setCanLoad}) {
+function ViewModal({handleOnEditClick, handleOnModalClose, notice, isEditNotHidden,setCanLoad}) {
     const styles = useStyles();
 
     const handleOnDelete = () =>{
         fetch("http://localhost:8080/notice/delete", {
             method: "POST",
-            body: JSON.stringify(news),
+            body: JSON.stringify(notice),
             headers: { "Content-Type": "application/json" }
         }).then(response => {
             return response.text()
@@ -33,18 +33,18 @@ function ViewModal({handleOnEditClick, handleOnModalClose, news, isEditNotHidden
             {
                 !isEditNotHidden && <Grid container>
                     <Grid item xs={12}>
-                        <h2>{news.title}</h2>
+                        <h2>{notice.title}</h2>
                     </Grid>
                     <Grid item xs={12}>
-                        <h5 className={styles.fontColor}>Autor: {news.authorName}</h5>
+                        <h5 className={styles.fontColor}>Autor: {notice.authorName}</h5>
                     </Grid>
                     <Grid item xs={12}>
                         <p>
-                            {news.text}
+                            {notice.text}
                         </p>
                     </Grid>
                     <Grid item xs={12}>
-                        <ButtonGroup variant="outlined" aria-label="contained primary button group">
+                        <ButtonGroup variant="outlined">
                             <Button onClick={handleOnEditClick} color="primary" startIcon={<EditIcon/>}>Editar</Button>
                             <Button onClick={handleOnDelete} color="secondary" startIcon={<DeleteIcon/>}>Excluir</Button>
                             <Button onClick={handleOnModalClose}>Fechar</Button>

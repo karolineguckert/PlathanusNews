@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import { Grid } from "@material-ui/core";
-import NewsCard from "./components/NewsCard";
+import NoticeCard from "./components/NoticeCard";
 import { makeStyles } from '@material-ui/core/styles';
-import Modal from "@material-ui/core/Modal";
-import ModalChanges from "./components/ModalChanges";
+import ModalChanges from "../edit/ModalChanges";
+import  {useLocation} from "react-router-dom";
 
 const useStyles = makeStyles((theme) =>({
     paper:{
@@ -22,55 +22,67 @@ const useStyles = makeStyles((theme) =>({
 
 function View() {
     const styles = useStyles();
-    const [newsState, setNewsState] = useState([]);
+    const [noticeState, setNoticeState] = useState([]);
     const [canLoad, setCanLoad] = useState(true);
     const [open, setOpen] = useState(false);
     const [isEditNotHidden,setIsHidden] = React.useState(false);
-
-
-    const [modalNews,setModalNews] = useState({
+    const [modalNotice,setModalNotice] = useState({
         title: '',
         text: '',
         authorName: ''
     })
 
-    const handleOnClickNews = (news) => {
+    const handleOnClickNotices = (notice) => {
         setOpen(!open);
-        setModalNews({title: news.title, text: news.text, authorName: news.author.name})
+        setModalNotice({title: notice.title, text: notice.text, authorName: notice.author.name})
     }
 
     const handleOnModalClose = () =>{
         setOpen(!open);
-        getNews();
-        setIsHidden(!isEditNotHidden);
+        getNotices();
+        if (isEditNotHidden){
+            setIsHidden(!isEditNotHidden);
+        }
     }
 
-    const getNews = () => {
-        setCanLoad(false);
-        fetch("http://localhost:8080/notice/getnotices", {
-            method: "POST",
-        }).then(response => {
-            return response.json()
-        }).then(body => {
-            setNewsState(body)
-        });
+    const getNotices = () => {
+        // let search = new URLSearchParams(useLocation().search).get("search");
+        // if (!search){
+            setCanLoad(false);
+            fetch("http://localhost:8080/notice/getnotices", {
+                method: "POST",
+            }).then(response => {
+                return response.json()
+            }).then(body => {
+                setNoticeState(body)
+            });
+        // }else{
+        //     fetch("http://localhost:8080/notice/search?search=" + search, {
+        //         method: "GET",
+        //     }).then(response => {
+        //         return response.json()
+        //     }).then(body => {
+        //         console.log(body)
+        //         setNoticeState(body)
+        //     });
+        // }
     }
 
     if(canLoad){
-        getNews();
+        getNotices();
     }
 
     return (
         <div className={styles.div}>
             <Grid container spacing={2}>
-                {newsState.map(news =>
-                    <Grid onClick={() => handleOnClickNews(news)} item xs={12} md={6} key={news.title}>
-                        <NewsCard authorName={news.author.name} title={news.title} text={news.text} className={styles.paper}/>
+                {noticeState.map(notice =>
+                    <Grid onClick={() => handleOnClickNotices(notice)} item xs={12} md={6} key={notice.title}>
+                        <NoticeCard authorName={notice.author.name} title={notice.title} text={notice.text} className={styles.paper}/>
                     </Grid>
                 )}
             </Grid>
             <ModalChanges handleOnModalClose={handleOnModalClose}
-                          open={open} news={modalNews} setCanLoad={setCanLoad}
+                          open={open} notice={modalNotice} setCanLoad={setCanLoad}
                           isEditNotHidden={isEditNotHidden} setIsHidden={setIsHidden}
             />
         </div>

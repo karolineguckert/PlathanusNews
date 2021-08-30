@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { AppBar, Toolbar, Typography, InputBase } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import {  makeStyles } from '@material-ui/core/styles';
@@ -6,6 +6,8 @@ import { ImHome } from "react-icons/im";
 import { ImNewspaper } from "react-icons/im";
 import Link from "@material-ui/core/Link";
 import Tooltip from "@material-ui/core/Tooltip";
+import  {useHistory} from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -16,26 +18,23 @@ const useStyles = makeStyles((theme) => ({
         position: "relative",
         borderRadius: theme.shape.borderRadius,
         //backgroundColor: alpha(theme.palette.common.white, 0.15),
-        marginRight: 0,
+
         width: "50%",
         [theme.breakpoints.up("sm")]: {
-            marginLeft: theme.spacing(1),
+            marginLeft: theme.spacing(5),
             width: "auto"
-        }
+        },
     },
     searchIcon: {
-        padding: theme.spacing(0, 2),
-        height: "100%",
-        position: "absolute",
-        display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+
     },
     inputColor: {
         color: "inherit"
     },
     input: {
-        paddingLeft: theme.spacing(6),
+        paddingLeft: theme.spacing(3),
         width: "50%",
     }, icons: {
         marginLeft: '8px'
@@ -44,6 +43,16 @@ const useStyles = makeStyles((theme) => ({
 
 function TopBar() {
     const styles = useStyles();
+    const [search,setSearch] = useState('');
+    let historic = useHistory();
+
+    const handleOnSearch = (event) => {
+        setSearch(event.target.value);
+    }
+
+    const handleOnClick = () =>{
+        historic.push("/view?search=" + search)
+    }
 
     return (
         <div className={styles.root}>
@@ -53,15 +62,14 @@ function TopBar() {
                         News
                     </Typography>
                     <div className={styles.search}>
-                        <div className={styles.searchIcon}>
-                            <SearchIcon />
-                        </div>
+                            <SearchIcon className={styles.searchIcon} onClick={handleOnClick}/>
                         <InputBase
                             placeholder="Pesquisar…"
                             classes={{
                                 root: styles.inputColor,
                                 input: styles.input
                             }}
+                            onChange={(event)=>(handleOnSearch(event))}
                         />
                     </div>
                     <div>

@@ -5,8 +5,9 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import React from "react";
+import Validator from "../../helper/Validator";
 
-function EditModal({handleOnModalClose, isEditNotHidden,setIsHidden, setDataNews, dataNews, setCanLoad}) {
+function EditModal({handleOnModalClose, isEditNotHidden, setNoticeData, noticeData, setCanLoad}) {
     const [alert,setAlert] = React.useState({
         text: '',
         hidden: false,
@@ -20,41 +21,21 @@ function EditModal({handleOnModalClose, isEditNotHidden,setIsHidden, setDataNews
     const [disableSave,setDisableSave] = React.useState(false);
 
     const handleOnChangeData = (attributeName, event) =>{
-        setDataNews({...dataNews, [attributeName]: event.target.value});
+        setNoticeData({...noticeData, [attributeName]: event.target.value});
     }
 
     const handleOnUpdateClick = () =>{
-        let isValid = validateFields();
+        let isValid = Validator(noticeData,setAlert);
         if (isValid){
             fetch("http://localhost:8080/notice/update", {
                 method: "POST",
-                body: JSON.stringify(dataNews),
+                body: JSON.stringify(noticeData),
                 headers: { "Content-Type": "application/json" }
             }).then(response => {
                 return response.text()
             });
             setDisableSave(!disableSave);
             setCanLoad(true);
-        }
-    };
-
-    const validateFields = () => {
-        if (!dataNews.title){
-            setAlert({"text":"O Título da notícia não pode ser vazio!","type":"error","hidden": true})
-            return false;
-        } else{
-            if (!dataNews.text){
-                setAlert({"text":"O Texto da notícia não pode ser vazio!","type":"error","hidden": true})
-                return false;
-            }else {
-                if (!dataNews.authorName){
-                    setAlert({"text":"O Nome do autor não pode ser vazio!","type":"error","hidden": true})
-                    return false;
-                } else{
-                    setAlert({"text":"A notícia foi editada com sucesso!","type":"success","hidden": true})
-                    return true;
-                }
-            }
         }
     };
 
@@ -72,7 +53,7 @@ function EditModal({handleOnModalClose, isEditNotHidden,setIsHidden, setDataNews
                         <TextField label="Título"
                                    variant="outlined"
                                    size={"small"}
-                                   defaultValue={dataNews.title}
+                                   defaultValue={noticeData.title}
                                    onChange={(event)=> handleOnChangeData("title",event)}
                         />
                     </Grid>
@@ -82,7 +63,7 @@ function EditModal({handleOnModalClose, isEditNotHidden,setIsHidden, setDataNews
                                    rows={4}
                                    variant="outlined"
                                    size={"small"}
-                                   defaultValue={dataNews.text}
+                                   defaultValue={noticeData.text}
                                    onChange={(event)=> handleOnChangeData("text",event)}
                         />
                     </Grid>
@@ -90,12 +71,12 @@ function EditModal({handleOnModalClose, isEditNotHidden,setIsHidden, setDataNews
                         <TextField label="Nome do Autor"
                                    variant="outlined"
                                    size={"small"}
-                                   defaultValue={dataNews.authorName}
+                                   defaultValue={noticeData.authorName}
                                    onChange={(event)=> handleOnChangeData("authorName",event)}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <ButtonGroup variant="outlined" aria-label="contained primary button group">
+                        <ButtonGroup variant="outlined">
                             <Button disabled={disableSave} color="primary" onClick={handleOnUpdateClick} startIcon={<SaveIcon/>}>Salvar</Button>
                             <Button onClick={handleOnModalClose}>Fechar</Button>
                         </ButtonGroup>

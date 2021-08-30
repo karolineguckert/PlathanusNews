@@ -10,17 +10,14 @@ const useStyles = makeStyles((theme) => ({
         color: '#8a8989',
         fontFamily: 'verdana'
     },
-    title:{
-        fontStyle:'bold'
-    }
 }));
 
-function NewsCard({title,text,authorName}) {
+function NoticeCard({title,text,authorName}) {
     const styles = useStyles();
     return (
         <Card>
             <CardContent>
-                <Typography className={styles.title} gutterBottom variant="h5" >
+                <Typography gutterBottom variant="h5" >
                     {title}
                 </Typography>
                 <h5 className={styles.fontColor}>Autor: {authorName}</h5>
@@ -31,4 +28,4 @@ function NewsCard({title,text,authorName}) {
         </Card>
     );
 }
-export default NewsCard;
+export default NoticeCard;

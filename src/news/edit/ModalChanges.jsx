@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from "@material-ui/core/Modal";
-import EditModal from "../../edit/EditModal";
-import ViewModal from "../../edit/ViewModal";
+import EditModal from "./components/EditModal";
+import ViewModal from "./components/ViewModal";
 
 const useStyles = makeStyles((theme) =>({
     paper:{
@@ -17,26 +17,19 @@ const useStyles = makeStyles((theme) =>({
     },
 }))
 
-function ModalChanges({open, news, handleOnModalClose, setCanLoad, setIsHidden, isEditNotHidden}) {
+function ModalChanges({open, notice, handleOnModalClose, setCanLoad, setIsHidden, isEditNotHidden}) {
     const styles = useStyles();
-    const [data,setData] = React.useState({
-        oldTitle: news.title,
-        oldText: news.text,
-        oldAuthorName: news.authorName,
-        title: news.title,
-        text: news.text,
-        authorName: news.authorName
-    });
+    const [noticeData,setNoticeData] = React.useState({});
 
     const handleOnEditClick = () =>{
         setIsHidden(!isEditNotHidden);
-        setData({
-            oldTitle: news.title,
-            oldText: news.text,
-            oldAuthorName: news.authorName,
-            title: news.title,
-            text: news.text,
-            authorName: news.authorName
+        setNoticeData({
+            oldTitle: notice.title,
+            oldText: notice.text,
+            oldAuthorName: notice.authorName,
+            title: notice.title,
+            text: notice.text,
+            authorName: notice.authorName
         });
     }
 
@@ -47,14 +40,13 @@ function ModalChanges({open, news, handleOnModalClose, setCanLoad, setIsHidden, 
                     <ViewModal handleOnEditClick={handleOnEditClick}
                                handleOnModalClose={handleOnModalClose}
                                isEditNotHidden={isEditNotHidden}
-                               news={news}
+                               notice={notice}
                                setCanLoad={setCanLoad}
                     />
                     <EditModal handleOnModalClose={handleOnModalClose}
                                isEditNotHidden={isEditNotHidden}
-                               news={data}
-                               setDataNews={setData}
-                               dataNews={data}
+                               setNoticeData={setNoticeData}
+                               noticeData={noticeData}
                                setCanLoad={setCanLoad}
                     />
                 </div>

@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Alert from '@material-ui/lab/Alert';
+import Validator from "../helper/Validator";
 
 const useStyles = makeStyles((theme) =>({
     paper:{
@@ -28,13 +29,17 @@ const useStyles = makeStyles((theme) =>({
 function Register() {
     const styles = useStyles();
 
-    let [data,setData] = useState(
+    let [noticeData,setNoticeData] = useState(
         {
             title: '',
             text: '',
             authorName: ''
         }
     )
+
+    const handleOnChangeData = (attributeName, event) =>{
+        setNoticeData({...noticeData, [attributeName]: event.target.value});
+    }
 
     let [alert,setAlert] = useState(
         {
@@ -43,18 +48,17 @@ function Register() {
             type: ''
         }
     )
-
-    const handleOnChangeData = (attributeName, event) =>{
-        setData({...data, [attributeName]: event.target.value});
+    const onAlertClose = () =>{
+        setAlert({"hidden": false});
     }
 
     const handleOnClick = () => {
-        let isValid = validateFields();
+        let isValid = Validator(noticeData,setAlert);
 
         if (isValid){
             fetch("http://localhost:8080/notice/register", {
                 method: "POST",
-                body: JSON.stringify(data),
+                body: JSON.stringify(noticeData),
                 headers: { "Content-Type": "application/json" }
             }).then(response => {
                 return response.text()
@@ -62,32 +66,8 @@ function Register() {
         }
     }
 
-    const onAlertClose = () =>{
-        setAlert({"hidden": false});
-    }
-
-    const validateFields = () => {
-        if (!data.title){
-            setAlert({"text":"O Título da notícia não pode ser vazio!","type":"error","hidden": true})
-            return false;
-        } else{
-            if (!data.text){
-                setAlert({"text":"O Texto da notícia não pode ser vazio!","type":"error","hidden": true})
-                return false;
-            }else {
-                if (!data.authorName){
-                    setAlert({"text":"O Nome do autor não pode ser vazio!","type":"error","hidden": true})
-                    return false;
-                } else{
-                    setAlert({"text":"A notícia foi inserida com sucesso!","type":"success","hidden": true})
-                    return true;
-                }
-            }
-        }
-    }
-
     return (
-        <div>
+        <React.Fragment>
             {alert.hidden && <Alert onClose={onAlertClose} severity={alert.type}>{alert.text}</Alert>}
             <div className={styles.div}>
                 <Paper className={styles.paper}>
@@ -130,7 +110,7 @@ function Register() {
                     </Grid>
                 </Paper>
             </div>
-        </div>
+        </React.Fragment>
     );
 }
 export default Register;

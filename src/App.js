@@ -8,9 +8,9 @@ import Register from "./news/register/Register";
 function App() {
   return (
         <header>
-            <TopBar/>
-            <Toolbar/>
             <BrowserRouter>
+                <TopBar/>
+                <Toolbar/>
                 <Route exact path={'/'}>
                     <Redirect to={'/view'}/>
                 </Route>
