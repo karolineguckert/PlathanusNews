@@ -1,5 +1,5 @@
 # Projeto de Notícias Plathanus 
-Esse projeto foi desenvolvido para cumprir com o desafio proposto pela empresa Plathanus, e tem como objetivo desenvolver um layout para um site de noticias. Link para o back-end:
+Esse projeto foi desenvolvido para cumprir com o desafio proposto pela empresa Plathanus, e tem como objetivo desenvolver um layout para um site de noticias. Link para o back-end: https://github.com/karolineguckert/PlathanusNews-server
 
 ### Dependencies
 - @material-ui/core: 4.11.2
