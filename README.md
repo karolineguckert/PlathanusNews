@@ -7,7 +7,6 @@ Esse projeto foi desenvolvido para cumprir com o desafio proposto pela empresa P
 - react-router-dom: 5.2.1
 
 ### Instalation
-- **1.** Copy **".env.exemple"**, save with name **".env"** and configure yours environment variables. \
-- **2.** run `docker-compose up --build`
-- **For stop.** run `docker-compose down`
+- **1.** npm install
+- **2.** npm start
 
