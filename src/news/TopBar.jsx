@@ -2,7 +2,10 @@ import React from "react";
 import { AppBar, Toolbar, Typography, InputBase } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import {  makeStyles } from '@material-ui/core/styles';
-
+import { ImHome } from "react-icons/im";
+import { ImNewspaper } from "react-icons/im";
+import Link from "@material-ui/core/Link";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -34,11 +37,14 @@ const useStyles = makeStyles((theme) => ({
     input: {
         paddingLeft: theme.spacing(6),
         width: "50%",
+    }, icons: {
+        marginLeft: '8px'
     }
 }));
 
 function TopBar() {
     const styles = useStyles();
+
     return (
         <div className={styles.root}>
             <AppBar>
@@ -57,6 +63,18 @@ function TopBar() {
                                 input: styles.input
                             }}
                         />
+                    </div>
+                    <div>
+                        <Tooltip title="Home" placement="bottom">
+                            <Link href={'/view'}>
+                                <ImHome size={20} color={"white"}/>
+                            </Link>
+                        </Tooltip>
+                        <Tooltip title="Adicionar" placement="bottom">
+                            <Link href={'/register'}>
+                                <ImNewspaper size={20} color={"white"} className={styles.icons}/>
+                            </Link>
+                        </Tooltip>
                     </div>
                 </Toolbar>
             </AppBar>
